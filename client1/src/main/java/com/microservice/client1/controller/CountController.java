@@ -8,10 +8,8 @@ import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,5 +40,19 @@ public class CountController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorUtil.WRONG_INPUT);
         }
         return service.save(number);
+    }
+
+    @RequestMapping(value = "/{number}", method = RequestMethod.GET)
+    public ResponseEntity getCountByNumber(@PathVariable Integer number) {
+        Count countByNumber = service.getCountByNumber(number);
+        if(countByNumber == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorUtil.NOT_FOUND);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(countByNumber);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity handleExceptionForWrongInput(MethodArgumentTypeMismatchException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorUtil.WRONG_INPUT);
     }
 }

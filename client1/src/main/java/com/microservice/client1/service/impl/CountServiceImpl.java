@@ -34,7 +34,7 @@ public class CountServiceImpl implements CountService {
 
     @Override
     public Count getCountByNumber(Integer number) {
-        return null;
+        return repository.findCountByNumber(number);
     }
 
     @Override
