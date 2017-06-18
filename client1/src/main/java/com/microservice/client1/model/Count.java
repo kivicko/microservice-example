@@ -43,4 +43,11 @@ public class Count {
     public void setSaveDate(Date saveDate) {
         this.saveDate = saveDate;
     }
+
+    @Override
+    public String toString() {
+        return "ID: " + this.id + "\n" +
+                "NUMBER: " + this.number + "\n" +
+                "DATE: "+ this.saveDate + "\n";
+    }
 }

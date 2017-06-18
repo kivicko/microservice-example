@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface CountRepository extends MongoRepository<Count, String> {
+    Count findCountByNumber(Integer number);
 }

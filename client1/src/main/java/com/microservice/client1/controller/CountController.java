@@ -2,6 +2,7 @@ package com.microservice.client1.controller;
 
 import com.microservice.client1.model.Count;
 import com.microservice.client1.service.CountService;
+import com.microservice.client1.util.ErrorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
@@ -29,28 +30,17 @@ public class CountController {
     @Autowired
     private CountService service;
 
-    @RequestMapping("/{applicationName}")
-    public List<ServiceInstance> serviceInstancesByApplicationName(
-            @PathVariable String applicationName) {
-        return this.discoveryClient.getInstances(applicationName);
-    }
-
-    @RequestMapping("/")
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public List<Count> getAllCount() {
-        Count count = new Count();
-        count.setId("1");
-        count.setNumber(1);
-        count.setSaveDate(new Date());
-        List<Count> countList = new ArrayList<>();
-        countList.add(count);
-        return countList;
+
+        return service.getAllCounts();
     }
 
-//    @RequestMapping(value = "/{number}", method = RequestMethod.POST)
-//    public ResponseEntity saveCount(@PathVariable Integer number) {
-//        if(number == null) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorUtil.WRONG_INPUT);
-//        }
-//        return service.save(number);
-//    }
+    @RequestMapping(value = "/{number}", method = RequestMethod.POST)
+    public ResponseEntity saveCount(@PathVariable Integer number) {
+        if(number == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorUtil.WRONG_INPUT);
+        }
+        return service.save(number);
+    }
 }
