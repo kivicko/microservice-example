@@ -4,16 +4,12 @@ import com.microservice.client1.model.Count;
 import com.microservice.client1.service.CountService;
 import com.microservice.client1.util.ErrorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,9 +18,6 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/kivi-client")
 public class CountController {
-
-    @Autowired
-    private DiscoveryClient discoveryClient;
 
     @Autowired
     private CountService service;
@@ -38,9 +31,7 @@ public class CountController {
 
     @RequestMapping(value = "/{number}", method = RequestMethod.POST)
     public ResponseEntity saveCount(@PathVariable Integer number) {
-        if(number == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorUtil.WRONG_INPUT);
-        }
+
         return service.save(number);
     }
 
@@ -71,8 +62,20 @@ public class CountController {
         return ResponseEntity.status(HttpStatus.OK).body(countByNumber);
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(value = MethodArgumentTypeMismatchException.class)
     public ResponseEntity handleExceptionForWrongInput(MethodArgumentTypeMismatchException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorUtil.WRONG_INPUT);
     }
+
+
+    @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity handleExceptionForWrongInput2(HttpRequestMethodNotSupportedException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorUtil.NOT_SUPPORTED);
+    }
+
+    @ExceptionHandler(value = Exception.class)
+    public ResponseEntity handleGeneralException3(Exception ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorUtil.SOMETHING_WE_DID_NOT_EXPECT);
+    }
+
 }
