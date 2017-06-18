@@ -42,6 +42,24 @@ public class CountController {
         return service.save(number);
     }
 
+    @RequestMapping(value = "/{number}", method = RequestMethod.DELETE)
+    public ResponseEntity deleteCount(@PathVariable Integer number) {
+        if(number == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorUtil.WRONG_INPUT);
+        }
+        return service.removeCountByNumber(number);
+    }
+
+    @RequestMapping(value = "/biggestCount", method = RequestMethod.GET)
+    public ResponseEntity getBiggestCount() {
+        return ResponseEntity.status(HttpStatus.OK).body(service.getBiggestCount());
+    }
+
+    @RequestMapping(value = "/lowestCount", method = RequestMethod.GET)
+    public ResponseEntity getSmallestCount() {
+        return ResponseEntity.status(HttpStatus.OK).body(service.getSmallestCount());
+    }
+
     @RequestMapping(value = "/{number}", method = RequestMethod.GET)
     public ResponseEntity getCountByNumber(@PathVariable Integer number) {
         Count countByNumber = service.getCountByNumber(number);

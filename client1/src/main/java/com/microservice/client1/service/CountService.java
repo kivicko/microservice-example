@@ -13,6 +13,6 @@ public interface CountService {
     public Count getCountByNumber(Integer number);
     public Count getBiggestCount();
     public Count getSmallestCount();
-    public boolean removeCountByNumber();
+    public ResponseEntity removeCountByNumber(Integer number);
     public List<Count> getAllCounts();
 }
