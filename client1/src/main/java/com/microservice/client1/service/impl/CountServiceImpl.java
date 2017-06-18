@@ -5,18 +5,11 @@ import com.microservice.client1.repository.CountRepository;
 import com.microservice.client1.service.CountService;
 import com.microservice.client1.util.ErrorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import javax.xml.ws.Response;
 import java.util.Date;
 import java.util.List;
 
@@ -33,6 +26,7 @@ public class CountServiceImpl implements CountService {
         if(repository.findCountByNumber(number) != null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorUtil.TRY_WITH_DIFFERENT_COUNT);
         }
+        //TODO Burada constructor yapacaktım ancak nested constructor gibi bi hata alındı.
         Count count = new Count();
         count.setSaveDate(new Date());
         count.setNumber(number);
