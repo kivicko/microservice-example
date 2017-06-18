@@ -1,6 +1,7 @@
 package com.microservice.client1.service;
 
 import com.microservice.client1.model.Count;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -14,5 +15,5 @@ public interface CountService {
     public Count getBiggestCount();
     public Count getSmallestCount();
     public ResponseEntity removeCountByNumber(Integer number);
-    public List<Count> getAllCounts();
+    public List<Count> getAllCountsBySorting(Sort.Direction direction);
 }

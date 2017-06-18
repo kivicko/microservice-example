@@ -6,6 +6,7 @@ import com.microservice.client1.util.ErrorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,9 +30,10 @@ public class CountController {
     private CountService service;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public List<Count> getAllCount() {
+    public List<Count> getAllCount(@RequestParam(value = "sorting", defaultValue = "asc") String sorting) {
+        Sort.Direction direction = sorting.equalsIgnoreCase("DESC") ? Sort.Direction.DESC : Sort.Direction.ASC;
 
-        return service.getAllCounts();
+        return service.getAllCountsBySorting(direction);
     }
 
     @RequestMapping(value = "/{number}", method = RequestMethod.POST)

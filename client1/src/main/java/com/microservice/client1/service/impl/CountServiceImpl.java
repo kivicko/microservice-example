@@ -69,7 +69,10 @@ public class CountServiceImpl implements CountService {
     }
 
     @Override
-    public List<Count> getAllCounts() {
-        return repository.findAll();
+    public List<Count> getAllCountsBySorting(Sort.Direction direction) {
+        PageRequest request = new PageRequest(0,repository.findAll().size(), new Sort(direction, "number"));
+
+        return repository.findAllBy(request).getContent();
     }
+
 }
