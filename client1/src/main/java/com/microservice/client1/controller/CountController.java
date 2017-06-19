@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+
 import java.util.List;
 
 /**
@@ -65,12 +65,6 @@ public class CountController {
     @ExceptionHandler(value = MethodArgumentTypeMismatchException.class)
     public ResponseEntity handleExceptionForWrongInput(MethodArgumentTypeMismatchException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorUtil.WRONG_INPUT);
-    }
-
-
-    @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
-    public ResponseEntity handleExceptionForWrongInput2(HttpRequestMethodNotSupportedException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorUtil.NOT_SUPPORTED);
     }
 
     @ExceptionHandler(value = Exception.class)
